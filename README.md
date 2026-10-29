@@ -101,5 +101,6 @@ Los audios necesitan que la página se abra desde un servidor (GitHub Pages o `p
 - **Azul y blanco:** el azul transmite confianza y orden (color institucional); el blanco deja las tarjetas limpias y fáciles de leer.
 - **Verde, ámbar y rojo** se usan solo para estados, y siempre van con un dibujo: el color nunca es la única señal.
 - **Menú principal** con tres accesos grandes de dibujo y una sola palabra.
+- **Pantallas anchas:** desde 1200 px el Inicio suma un panel a la derecha (tareas por hacer, último mensaje y notas), las listas se acomodan en varias columnas y la conversación muestra chat y formulario lado a lado.
 - **Navegación:** barra inferior de 4 pestañas en el celular y menú lateral en computadora; la sección activa se marca en azul y su dibujo crece. Las pantallas de detalle tienen un botón **← Volver** arriba.
 - **Botones grandes:** el círculo de "hecha" mide 56 px, el micrófono 76 px y los parlantes 48 px, para dedos pequeños.
