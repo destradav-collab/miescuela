@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1E5BB8">
+<title>Mi Escuela</title>
+<style>
+/* ===== Paleta =====
+   Azul principal: confianza y orden (color institucional).
+   Blanco: superficies limpias, fácil de leer.
+   Verde / ámbar / rojo: solo para estados (hecha, por vencer, atrasada).
+   Usuario: estudiante de primer grado que todavía no lee. Por eso todo
+   tiene dibujo, se puede escuchar y cada nota (de 0 a 100) lleva una barra y un mensaje de ánimo. */
+:root{
+  --azul:#1E5BB8; --azul-osc:#15438A; --azul-claro:#E8F0FC; --fondo:#F4F7FC;
+  --blanco:#FFFFFF; --texto:#1B2433; --suave:#56617A; --linea:#DCE3EE;
+  --verde:#17703D; --verde-bg:#E3F5EA; --verde-btn:#1F8A4C;
+  --ambar:#8F5600; --ambar-bg:#FFF2DC;
+  --rojo:#B3261E; --rojo-bg:#FDE8E6;
+  --radio:18px; --sombra:0 2px 10px rgba(21,67,138,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--fondo);color:var(--texto);font-size:16px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+svg.i{width:24px;height:24px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+svg.ic{width:32px;height:32px;flex:none;display:block}
+[hidden]{display:none!important}
+h1:focus{outline:none}
+
+/* ===== Estructura ===== */
+.app{min-height:100vh;display:flex;flex-direction:column}
+header.barra{background:var(--azul);color:#fff;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 12px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+.logo{width:42px;height:42px;border-radius:12px;background:#fff;display:grid;place-items:center}
+.logo svg.ic{width:32px;height:32px}
+.titulo{font-weight:700;font-size:18px}
+.sub{font-size:13px;opacity:.9}
+.acciones{margin-left:auto;display:flex;gap:8px}
+.cab-btn{display:flex;align-items:center;gap:8px;border:0;border-radius:24px;padding:5px 12px 5px 5px;background:rgba(255,255,255,.18);color:#fff;font-weight:600;font-size:13px;cursor:pointer;min-height:44px}
+.cab-btn .bola{width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--azul);font-weight:800;font-size:20px}
+.cab-btn .bola svg.ic{width:24px;height:24px}
+.cab-btn.solo{padding:5px}
+.cab-btn[aria-pressed="false"]{opacity:.7}
+.cab-btn[aria-pressed="false"] .bola{background:rgba(255,255,255,.5)}
+.cab-btn[aria-pressed="false"] #voz-lbl{text-decoration:line-through}
+main{flex:1;padding:16px 16px 108px;max-width:900px;width:100%;margin:0 auto}
+h1{font-size:22px;margin:4px 0 4px}
+h2{font-size:17px;margin:24px 0 10px}
+.muted{color:var(--suave);font-size:14px}
+.fila{display:flex;align-items:center;gap:10px}
+
+/* Barra inferior (móvil) */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--blanco);border-top:1px solid var(--linea);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 7px;color:var(--suave);text-decoration:none;font-size:12px;font-weight:600;position:relative}
+nav.tabs a svg.ic{width:36px;height:36px;transition:transform .15s}
+nav.tabs a[aria-current="page"]{color:var(--azul)}
+nav.tabs a[aria-current="page"] svg.ic{transform:scale(1.12)}
+nav.tabs a[aria-current="page"]::before{content:"";position:absolute;top:0;left:28%;right:28%;height:4px;border-radius:0 0 4px 4px;background:var(--azul)}
+.badge{position:absolute;top:4px;left:calc(50% + 8px);min-width:22px;height:22px;padding:0 5px;border-radius:11px;background:var(--rojo);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;border:2px solid #fff}
+
+/* Escritorio: menú lateral */
+@media (min-width:900px){
+  .app{flex-direction:row}
+  header.barra{position:fixed;left:0;top:0;bottom:0;width:240px;flex-direction:column;align-items:flex-start;padding:24px 16px}
+  .acciones{position:absolute;bottom:24px;left:16px;margin:0}
+  nav.tabs{top:130px;bottom:auto;left:0;width:240px;right:auto;background:transparent;border:0;display:flex;flex-direction:column;gap:6px;padding:0 12px}
+  nav.tabs a{flex-direction:row;gap:12px;font-size:16px;padding:8px 12px;border-radius:14px;color:#fff}
+  nav.tabs a svg.ic{background:#fff;border-radius:10px;padding:3px;width:42px;height:42px}
+  nav.tabs a[aria-current="page"]{background:#fff;color:var(--azul)}
+  nav.tabs a[aria-current="page"] svg.ic{transform:none}
+  nav.tabs a[aria-current="page"]::before{display:none}
+  .badge{position:static;margin-left:auto;border:0}
+  main{margin-left:240px;padding:32px 40px 40px}
+}
+
+/* ===== Componentes ===== */
+.card{background:var(--blanco);border-radius:var(--radio);box-shadow:var(--sombra);padding:16px}
+[data-abrir]{cursor:pointer}
+[data-abrir]:hover{box-shadow:0 0 0 2px var(--azul-claro),var(--sombra)}
+.accesos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.acceso{background:var(--blanco);border-radius:var(--radio);box-shadow:var(--sombra);padding:16px 6px 14px;text-align:center;text-decoration:none;color:var(--texto);font-weight:700;font-size:15px;display:flex;flex-direction:column;align-items:center;gap:8px;border:3px solid transparent}
+.acceso:hover,.acceso:focus-visible{border-color:var(--azul)}
+.acceso svg.ic{width:64px;height:64px}
+.resumen{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dato{padding:12px}
+.dato .fila{gap:6px}
+.dato svg.ic{width:28px;height:28px}
+.dato .num{font-size:26px;font-weight:800;color:var(--azul);line-height:1.1}
+.dato .lbl{font-size:12px;color:var(--suave);margin-top:4px}
+@media (min-width:600px){.accesos{gap:16px}.acceso{padding:24px 12px 18px;font-size:17px}.acceso svg.ic{width:80px;height:80px}.resumen{gap:12px}.dato{padding:16px}.dato .lbl{font-size:13px}}
+
+.volver{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--azul);font-weight:700;padding:10px 14px 10px 8px;margin:-6px 0 8px -8px;border-radius:12px;min-height:44px}
+.volver:hover{background:var(--azul-claro)}
+.volver svg.i{width:26px;height:26px;stroke-width:2.6}
+
+.filtros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.chip{border:2px solid var(--linea);background:var(--blanco);border-radius:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;font-size:12px;font-weight:600;color:var(--suave)}
+.chip svg.ic{width:32px;height:32px}
+.chip[aria-pressed="true"]{background:var(--azul-claro);color:var(--azul-osc);border-color:var(--azul)}
+
+.lista{display:flex;flex-direction:column;gap:12px}
+.tarea{display:flex;gap:12px;align-items:center}
+.materia-ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;flex:none}
+.materia-ico svg.ic{width:40px;height:40px}
+.tarea .cuerpo{flex:1;min-width:0}
+.nombre{font-weight:700;color:inherit;text-decoration:none;display:block}
+.meta{font-size:13px;color:var(--suave);margin-top:2px}
+.tarea.hecha .nombre{text-decoration:line-through;color:var(--suave)}
+.pie{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.estado{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:3px 10px 3px 4px;border-radius:14px}
+.estado svg.ic{width:22px;height:22px}
+.puntos{display:inline-flex;gap:3px;margin-left:2px}
+.puntos i{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.75}
+.e-pend{background:var(--azul-claro);color:var(--azul-osc)}
+.e-hecha{background:var(--verde-bg);color:var(--verde)}
+.e-atras{background:var(--rojo-bg);color:var(--rojo)}
+.e-riesgo{background:var(--ambar-bg);color:var(--ambar)}
+/* Círculo de "hecha": grande y separado del parlante para evitar toques equivocados */
+.check{width:56px;height:56px;border-radius:50%;border:3px solid #B9C4D4;background:var(--blanco);display:grid;place-items:center;cursor:pointer;flex:none;color:transparent;margin-left:6px}
+.check[aria-pressed="true"]{background:var(--verde-btn);border-color:var(--verde-btn);color:#fff}
+.check svg.i{width:28px;height:28px;stroke-width:3}
+
+/* Botón de "escuchar" (lectura en voz alta) */
+.hablar{width:48px;height:48px;border-radius:50%;border:0;background:var(--azul-claro);display:grid;place-items:center;cursor:pointer;flex:none}
+.hablar svg.ic{width:28px;height:28px}
+.hablar.hablando{background:#FFE7A3;animation:latido 1s infinite}
+@keyframes latido{50%{transform:scale(1.1)}}
+
+/* Detalle de tarea */
+.detalle-cab{display:flex;gap:14px;align-items:center}
+.detalle-cab .materia-ico{width:80px;height:80px;border-radius:22px}
+.detalle-cab .materia-ico svg.ic{width:58px;height:58px}
+.bloque{margin-top:14px}
+.bloque-tit{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;margin-bottom:8px}
+.materiales{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.material{background:var(--fondo);border-radius:14px;padding:10px 6px;text-align:center;font-size:13px;font-weight:600}
+.material .emo{font-size:36px;display:block;line-height:1.2}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:14px 18px;font-weight:700;font-size:17px;cursor:pointer;background:var(--azul);color:#fff;width:100%;min-height:52px}
+.btn:hover{background:var(--azul-osc)}
+.btn.verde{background:var(--verde-btn)}
+.btn.verde:hover{background:var(--verde)}
+.btn.gris{background:var(--azul-claro);color:var(--azul-osc)}
+.btn svg.i{width:24px;height:24px}
+.btn svg.ic{width:28px;height:28px}
+
+/* Notas (de 0 a 100) */
+.total{display:flex;align-items:center;gap:14px;background:var(--azul);color:#fff}
+.total > svg.ic{width:64px;height:64px}
+.total .num{font-size:34px;font-weight:800;line-height:1.1}
+.nota{display:grid;grid-template-columns:56px 1fr auto auto;gap:12px;align-items:center}
+.nota .barra{position:relative;height:12px;border-radius:6px;background:var(--azul-claro);margin-top:6px}
+.nota .barra span{display:block;height:100%;border-radius:6px}
+.nota .barra .minimo{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--suave);border-radius:1px}
+.nota .valor{font-size:28px;font-weight:800;min-width:44px;text-align:right}
+.nota .animo{font-size:13px;font-weight:700;margin-top:4px}
+.muestra{width:16px;height:16px;border-radius:5px;flex:none}
+.leyenda{display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--suave);margin-top:14px}
+.leyenda .fila{gap:10px}
+.leyenda svg.ic{width:22px;height:22px}
+
+/* Mensajes */
+.docente-fila{display:flex;gap:12px;align-items:center}
+.docente-fila .cuerpo{flex:1;min-width:0}
+.docente-fila .texto{font-size:14px;color:var(--suave);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.avatar{width:48px;height:48px;border-radius:50%;flex:none;overflow:hidden}
+.avatar svg.ic{width:100%;height:100%}
+.avatar.grande{width:72px;height:72px}
+.avatar.enorme{width:96px;height:96px;margin:0 auto}
+.nuevos{min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:var(--rojo);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+.chat-cab{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.chat-cab .cuerpo{flex:1}
+.chat-cab h1{margin:0}
+.hilo{display:flex;flex-direction:column;gap:10px;margin:8px 0 16px}
+.burbuja{max-width:85%;padding:10px 12px;border-radius:18px;box-shadow:var(--sombra)}
+.burbuja.suya{background:var(--blanco);align-self:flex-start;border-bottom-left-radius:6px}
+.burbuja.mia{background:var(--azul-claro);align-self:flex-end;border-bottom-right-radius:6px}
+.burbuja .b-texto{font-size:16px}
+.burbuja .b-pie{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--suave)}
+.burbuja .b-pie .hablar{width:40px;height:40px;margin-left:auto}
+.burbuja .b-pie .hablar svg.ic{width:24px;height:24px}
+.visto{color:var(--azul);font-weight:700}
+.enviado{color:var(--verde);font-weight:700}
+.paso{display:flex;align-items:center;gap:8px;font-weight:700;margin:16px 0 10px}
+.paso:first-child{margin-top:0}
+.frases{display:flex;flex-wrap:wrap;gap:8px}
+.frase{border:2px solid var(--linea);background:var(--blanco);border-radius:24px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px}
+.frase .emo{font-size:20px;vertical-align:-3px;margin-right:4px}
+.frase:hover{border-color:var(--azul)}
+.dictado{display:flex;gap:12px;align-items:stretch}
+.dictado textarea{flex:1;width:100%;border:2px solid var(--linea);border-radius:14px;padding:12px;background:var(--blanco);min-height:120px;resize:vertical;font-size:17px}
+.dictado textarea:focus{outline:none;border-color:var(--azul)}
+.dictado .lado{display:flex;flex-direction:column;gap:12px;align-items:center}
+.micro{width:76px;height:76px;border-radius:50%;border:0;background:#E5533D;color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 12px rgba(229,83,61,.35)}
+.micro svg.ic{width:40px;height:40px}
+.micro.escuchando{animation:pulso 1.2s infinite}
+.micro:disabled{background:#B9C2CF;box-shadow:none;cursor:not-allowed}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(229,83,61,.6)}100%{box-shadow:0 0 0 18px rgba(229,83,61,0)}}
+.estado-mic{font-size:14px;color:var(--suave);min-height:20px;margin-top:6px}
+.composer .btn{margin-top:14px}
+
+/* Diálogos (bienvenida, confirmar envío, permiso del micrófono) */
+dialog{border:0;border-radius:24px;padding:24px 20px 20px;width:calc(100% - 32px);max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.25);color:var(--texto)}
+dialog::backdrop{background:rgba(15,30,60,.5)}
+.dlg-centro{text-align:center}
+.dlg-centro h2{margin:12px 0 6px;font-size:21px}
+.dlg-centro p{margin:0 0 6px;color:var(--suave)}
+.dlg-centro .grande-ic{width:104px;height:104px;margin:0 auto}
+.cita{background:var(--fondo);border-radius:14px;padding:12px;font-size:17px;color:var(--texto)!important;margin:10px 0!important}
+.dlg-botones{display:flex;gap:10px;align-items:center;margin-top:16px}
+.dlg-botones .btn{flex:1}
+.dlg-botones.columna{flex-direction:column;align-items:stretch}
+.pasos-ayuda{display:flex;justify-content:center;gap:6px;margin-top:12px}
+.pasos-ayuda i{width:9px;height:9px;border-radius:50%;background:var(--linea)}
+.pasos-ayuda i.on{background:var(--azul);width:22px;border-radius:5px}
+
+.toast{white-space:nowrap;position:fixed;left:50%;bottom:104px;transform:translateX(-50%);background:var(--texto);color:#fff;padding:8px 8px 8px 18px;border-radius:14px;font-weight:600;font-size:15px;z-index:9;box-shadow:var(--sombra);display:flex;align-items:center;gap:12px;min-height:48px}
+.toast:not(:has(button)){padding-right:18px}
+.toast button{border:0;background:#fff;color:var(--azul-osc);font-weight:700;border-radius:10px;padding:8px 12px;cursor:pointer;min-height:40px}
+.vacio{text-align:center;color:var(--suave);padding:24px}
+a:focus-visible,button:focus-visible,[data-abrir]:focus-visible{outline:3px solid #7FA8E6;outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Íconos ilustrados (se reutilizan con <use href="#ic-…">) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="cp-uk"><rect x="4" y="10" width="40" height="28" rx="5"/></clipPath>
+
+    <!-- Marca y secciones -->
+    <symbol id="ic-mochila" viewBox="0 0 48 48"><path d="M18 11V8a6 6 0 0112 0v3" stroke="#B9531F" stroke-width="3" fill="none"/><rect x="9" y="10" width="30" height="34" rx="10" fill="#F07C2B"/><rect x="14" y="27" width="20" height="12" rx="4" fill="#FFB067"/><path d="M14 31h20" stroke="#D9661C" stroke-width="2"/><rect x="20" y="16" width="8" height="5" rx="2.5" fill="#FFD9B5"/></symbol>
+    <symbol id="ic-casa" viewBox="0 0 48 48"><path d="M3 24L24 6l21 18z" fill="#E5533D" stroke="#E5533D" stroke-width="2" stroke-linejoin="round"/><rect x="9" y="22" width="30" height="21" rx="2" fill="#FFD25A"/><rect x="20" y="29" width="8" height="14" rx="1.5" fill="#1E5BB8"/><rect x="12" y="26" width="6" height="6" rx="1" fill="#8FD3FF"/><rect x="30" y="26" width="6" height="6" rx="1" fill="#8FD3FF"/></symbol>
+    <symbol id="ic-cuaderno" viewBox="0 0 48 48"><rect x="6" y="5" width="28" height="38" rx="3" fill="#4C8DF6"/><rect x="10" y="9" width="22" height="30" rx="1.5" fill="#fff"/><path d="M14 16h14M14 22h14M14 28h9" stroke="#9DB9E8" stroke-width="2.5" stroke-linecap="round"/><g transform="rotate(35 36 28)"><rect x="32.5" y="12" width="7" height="24" fill="#FFC531"/><rect x="32.5" y="12" width="2.3" height="24" fill="#F0A500"/><path d="M32.5 36l3.5 7 3.5-7z" fill="#F5D7A1"/><path d="M34.8 40.6l1.2 2.4 1.2-2.4z" fill="#333"/><rect x="32.5" y="8" width="7" height="5" rx="1.5" fill="#F07C8C"/></g></symbol>
+    <symbol id="ic-estrella" viewBox="0 0 48 48"><path d="M24 4l6 12.5 13.6 1.9-9.9 9.5 2.4 13.5L24 35 11.9 41.4l2.4-13.5-9.9-9.5L18 16.5z" fill="#FFC531" stroke="#E5A100" stroke-width="2" stroke-linejoin="round"/><circle cx="19.5" cy="23" r="2.2" fill="#5A3B00"/><circle cx="28.5" cy="23" r="2.2" fill="#5A3B00"/><path d="M19.5 28.5q4.5 4 9 0" stroke="#5A3B00" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="16" cy="27" r="2" fill="#FF9A76" opacity=".7"/><circle cx="32" cy="27" r="2" fill="#FF9A76" opacity=".7"/></symbol>
+    <symbol id="ic-carta" viewBox="0 0 48 48"><rect x="4" y="11" width="40" height="28" rx="4" fill="#2EB872"/><path d="M6 14l18 13 18-13" stroke="#fff" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round"/><path d="M36 4c-2-2.5-6-1-5 2 .6 2 5 5 5 5s4.4-3 5-5c1-3-3-4.5-5-2z" fill="#E5533D"/></symbol>
+
+    <!-- Estado y tiempo de las tareas -->
+    <symbol id="ic-todas" viewBox="0 0 48 48"><rect x="6" y="6" width="16" height="16" rx="4" fill="#4C8DF6"/><rect x="26" y="6" width="16" height="16" rx="4" fill="#FFC531"/><rect x="6" y="26" width="16" height="16" rx="4" fill="#2EB872"/><rect x="26" y="26" width="16" height="16" rx="4" fill="#E5533D"/></symbol>
+    <symbol id="ic-reloj" viewBox="0 0 48 48"><circle cx="24" cy="25" r="19" fill="#4C8DF6"/><circle cx="24" cy="25" r="15" fill="#fff"/><path d="M24 15v10l7 4" stroke="#1E5BB8" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M8 9l6-4M40 9l-6-4" stroke="#4C8DF6" stroke-width="3.5" stroke-linecap="round"/></symbol>
+    <symbol id="ic-alerta" viewBox="0 0 48 48"><path d="M24 5l21 37H3z" fill="#E5533D" stroke="#E5533D" stroke-width="3" stroke-linejoin="round"/><path d="M24 17v12" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/><circle cx="24" cy="36" r="2.8" fill="#fff"/></symbol>
+    <symbol id="ic-listo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#2EB872"/><path d="M14 25l7 7 13-15" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-sol" viewBox="0 0 48 48"><circle cx="24" cy="24" r="10" fill="#FFC531"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6M10 10l4 4M34 34l4 4M38 10l-4 4M10 38l4-4" stroke="#FFB020" stroke-width="3.5" stroke-linecap="round"/></symbol>
+    <symbol id="ic-luna" viewBox="0 0 48 48"><path d="M30 5a19 19 0 1 0 13 31A16 16 0 0 1 30 5z" fill="#6C7BD9"/><circle cx="11" cy="11" r="2.2" fill="#FFC531"/><circle cx="18" cy="5" r="1.5" fill="#FFC531"/></symbol>
+    <symbol id="ic-calendario" viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="33" rx="5" fill="#fff" stroke="#4C8DF6" stroke-width="3"/><rect x="6" y="9" width="36" height="10" rx="4" fill="#4C8DF6"/><path d="M15 5v8M33 5v8" stroke="#1E5BB8" stroke-width="3.5" stroke-linecap="round"/><g fill="#9DB9E8"><circle cx="15" cy="27" r="2.5"/><circle cx="24" cy="27" r="2.5"/><circle cx="33" cy="27" r="2.5"/><circle cx="15" cy="35" r="2.5"/><circle cx="24" cy="35" r="2.5"/></g></symbol>
+
+    <!-- Estrella del resumen de notas -->
+    <symbol id="ic-estrella-llena" viewBox="0 0 48 48"><path d="M24 4l6 12.5 13.6 1.9-9.9 9.5 2.4 13.5L24 35 11.9 41.4l2.4-13.5-9.9-9.5L18 16.5z" fill="#FFC531" stroke="#E5A100" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+
+    <!-- Materias -->
+    <symbol id="ic-libro" viewBox="0 0 48 48"><path d="M24 12C18 8 10 8 4 10v28c6-2 14-2 20 2z" fill="#4C8DF6"/><path d="M24 12c6-4 14-4 20-2v28c-6-2-14-2-20 2z" fill="#7DB0FF"/><path d="M24 12v28" stroke="#2C5FB8" stroke-width="2"/><path d="M9 18c3-1 8-1 11 1M9 24c3-1 8-1 11 1M9 30c3-1 8-1 11 1M28 19c3-2 8-2 11-1M28 25c3-2 8-2 11-1M28 31c3-2 8-2 11-1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="ic-numeros" viewBox="0 0 48 48"><rect x="2" y="15" width="14" height="18" rx="3" fill="#E5533D"/><rect x="17" y="15" width="14" height="18" rx="3" fill="#2EB872"/><rect x="32" y="15" width="14" height="18" rx="3" fill="#4C8DF6"/><g font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="800" fill="#fff" text-anchor="middle"><text x="9" y="29">1</text><text x="24" y="29">2</text><text x="39" y="29">3</text></g></symbol>
+    <symbol id="ic-planta" viewBox="0 0 48 48"><path d="M14 30h20l-3 14H17z" fill="#C8693A"/><rect x="11" y="27" width="26" height="5" rx="2" fill="#E07B45"/><path d="M24 27V15" stroke="#2E9E5B" stroke-width="3" stroke-linecap="round"/><path d="M24 19C24 11 16 7 9 8c0 7 7 12 15 11z" fill="#3CC46E"/><path d="M24 15c0-7 7-11 14-10 0 7-6 11-14 10z" fill="#2EB872"/></symbol>
+    <symbol id="ic-mundo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#4C8DF6"/><path d="M13 11c4 2 7 0 9 3s-2 6 1 9-4 7-7 5-4-7-6-8 0-7 3-9z" fill="#3CC46E"/><path d="M30 25c3-1 8 1 9 4s-3 8-6 8-5-3-4-5-2-6 1-7z" fill="#3CC46E"/><path d="M28 8c3 0 7 2 8 4-2 1-6 0-8-1z" fill="#3CC46E"/></symbol>
+    <symbol id="ic-ingles" viewBox="0 0 48 48"><g clip-path="url(#cp-uk)"><rect x="4" y="10" width="40" height="28" fill="#1E4FA8"/><path d="M4 10l40 28M44 10L4 38" stroke="#fff" stroke-width="7"/><path d="M4 10l40 28M44 10L4 38" stroke="#E5533D" stroke-width="2.5"/><path d="M24 10v28M4 24h40" stroke="#fff" stroke-width="10"/><path d="M24 10v28M4 24h40" stroke="#E5533D" stroke-width="5.5"/></g></symbol>
+    <symbol id="ic-bola" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#fff" stroke="#2D3540" stroke-width="2.5"/><path d="M24 15l7.5 5.5-2.9 8.8h-9.2l-2.9-8.8z" fill="#2D3540"/><path d="M24 15V5M31.5 20.5l9-3M28.6 29.3l6 7.7M19.4 29.3l-6 7.7M16.5 20.5l-9-3" stroke="#2D3540" stroke-width="2.2"/></symbol>
+    <symbol id="ic-musica" viewBox="0 0 48 48"><path d="M17 36V12l23-5v24" stroke="#8A3FA0" stroke-width="3.5" fill="none" stroke-linejoin="round"/><path d="M17 13l23-5v7l-23 5z" fill="#8A3FA0"/><ellipse cx="12" cy="36" rx="6.5" ry="5.5" fill="#B05BD0"/><ellipse cx="35" cy="31" rx="6.5" ry="5.5" fill="#B05BD0"/></symbol>
+
+    <!-- Personas (el color del pelo cambia con "color" del svg) -->
+    <symbol id="ic-maestra" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#FFE3EC"/><circle cx="24" cy="10" r="6" fill="currentColor"/><path d="M8 32c0-14 6-21 16-21s16 7 16 21z" fill="currentColor"/><circle cx="24" cy="28" r="13" fill="#F6C9A0"/><path d="M11 26c2-8 8-11 13-11s11 3 13 11c-5-1-10-4-13-8-3 4-8 7-13 8z" fill="currentColor"/><circle cx="19" cy="29" r="1.8" fill="#3A2A20"/><circle cx="29" cy="29" r="1.8" fill="#3A2A20"/><path d="M19.5 34q4.5 3.5 9 0" stroke="#3A2A20" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="15.5" cy="33" r="2" fill="#FF9A9A" opacity=".6"/><circle cx="32.5" cy="33" r="2" fill="#FF9A9A" opacity=".6"/><path d="M4 48c2-6 10-8 20-8s18 2 20 8z" fill="#E5533D"/></symbol>
+    <symbol id="ic-maestro" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#E1EEFF"/><circle cx="24" cy="27" r="13" fill="#E8B48A"/><path d="M11 25c0-9 6-14 13-14s13 5 13 14c-3-4-8-6-13-6s-10 2-13 6z" fill="currentColor"/><circle cx="19" cy="28" r="4" fill="none" stroke="#1B2433" stroke-width="1.8"/><circle cx="29" cy="28" r="4" fill="none" stroke="#1B2433" stroke-width="1.8"/><path d="M23 28h2" stroke="#1B2433" stroke-width="1.8"/><circle cx="19" cy="28" r="1.5" fill="#1B2433"/><circle cx="29" cy="28" r="1.5" fill="#1B2433"/><path d="M19.5 34q4.5 3.5 9 0" stroke="#3A2A20" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M4 48c2-6 10-8 20-8s18 2 20 8z" fill="#1E5BB8"/></symbol>
+    <symbol id="ic-profe" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#E3F5EA"/><path d="M34 18c6 2 8 9 6 16-3-4-5-9-6-16z" fill="currentColor"/><circle cx="24" cy="27" r="13" fill="#D9A27A"/><path d="M11 25c1-9 7-13 13-13s12 4 13 13c-6 0-11-3-13-7-2 4-7 7-13 7z" fill="currentColor"/><path d="M10 22c4-9 24-9 28 0l-3 1c-4-6-18-6-22 0z" fill="#2EB872"/><circle cx="19" cy="29" r="1.8" fill="#3A2A20"/><circle cx="29" cy="29" r="1.8" fill="#3A2A20"/><path d="M19.5 34q4.5 3.5 9 0" stroke="#3A2A20" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M4 48c2-6 10-8 20-8s18 2 20 8z" fill="#2EB872"/><circle cx="24" cy="44" r="2" fill="#FFC531"/></symbol>
+
+    <!-- Voz -->
+    <symbol id="ic-parlante" viewBox="0 0 48 48"><path d="M5 18h9l11-9v30l-11-9H5z" fill="#1E5BB8" stroke="#1E5BB8" stroke-width="2" stroke-linejoin="round"/><path d="M31 17a9 9 0 010 14M36 12a16 16 0 010 24" stroke="#4C8DF6" stroke-width="3.5" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="ic-micro" viewBox="0 0 48 48"><rect x="17" y="4" width="14" height="25" rx="7" fill="currentColor"/><path d="M11 22a13 13 0 0026 0M24 35v7M17 43h14" stroke="currentColor" stroke-width="3.5" fill="none" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+
+<header class="barra">
+  <div class="logo" aria-hidden="true"><svg class="ic"><use href="#ic-mochila"/></svg></div>
+  <div>
+    <div class="titulo">Mi Escuela</div>
+    <div class="sub">Escuela Los Laureles</div>
+  </div>
+  <div class="acciones">
+    <button class="cab-btn solo" id="btn-ayuda" aria-label="Ayuda: ver cómo se usa la app"><span class="bola" aria-hidden="true">?</span></button>
+    <button class="cab-btn" id="voz-toggle" aria-pressed="true" title="Ayuda de voz: la app dice en voz alta dónde estás">
+      <span class="bola"><svg class="ic" aria-hidden="true"><use href="#ic-parlante"/></svg></span><span id="voz-lbl">Voz</span>
+    </button>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Menú principal">
+  <a href="#inicio" data-tab="inicio"><svg class="ic" aria-hidden="true"><use href="#ic-casa"/></svg>Inicio</a>
+  <a href="#tareas" data-tab="tareas"><svg class="ic" aria-hidden="true"><use href="#ic-cuaderno"/></svg>Tareas<span class="badge" id="badge-tareas" hidden></span></a>
+  <a href="#notas" data-tab="notas"><svg class="ic" aria-hidden="true"><use href="#ic-estrella"/></svg>Notas</a>
+  <a href="#mensajes" data-tab="mensajes"><svg class="ic" aria-hidden="true"><use href="#ic-carta"/></svg>Mensajes<span class="badge" id="badge-msg" hidden></span></a>
+</nav>
+
+<main>
+
+<!-- ===== INICIO (menú principal) ===== -->
+<section id="vista-inicio" data-vista>
+  <div class="fila">
+    <div style="flex:1">
+      <h1 tabindex="-1">¡Hola, Sofía! 👋</h1>
+      <div class="muted">1.° grado · Sección 1-2 · <span id="hoy"></span></div>
+    </div>
+    <button class="hablar" data-habla="saludo" aria-label="Escuchar el saludo"><svg class="ic" aria-hidden="true"><use href="#ic-parlante"/></svg></button>
+  </div>
+
+  <div class="accesos">
+    <a class="acceso" href="#tareas"><svg class="ic" aria-hidden="true"><use href="#ic-cuaderno"/></svg>Tareas</a>
+    <a class="acceso" href="#notas"><svg class="ic" aria-hidden="true"><use href="#ic-estrella"/></svg>Notas</a>
+    <a class="acceso" href="#mensajes"><svg class="ic" aria-hidden="true"><use href="#ic-carta"/></svg>Mensajes</a>
+  </div>
+
+  <h2>Resumen</h2>
+  <div class="resumen">
+    <div class="card dato"><div class="fila"><svg class="ic" aria-hidden="true"><use href="#ic-cuaderno"/></svg><div class="num" id="r-pend">0</div></div><div class="lbl">Tareas por hacer</div></div>
+    <div class="card dato"><div class="fila"><svg class="ic" aria-hidden="true"><use href="#ic-estrella-llena"/></svg><div class="num" id="r-promedio">0</div></div><div class="lbl">Promedio</div></div>
+    <div class="card dato"><div class="fila"><svg class="ic" aria-hidden="true"><use href="#ic-carta"/></svg><div class="num" id="r-msg">0</div></div><div class="lbl">Mensajes nuevos</div></div>
+  </div>
+
+  <h2>Lo próximo que hay que entregar</h2>
+  <div id="r-proxima"></div>
+</section>
+
+<!-- ===== TAREAS ===== -->
+<section id="vista-tareas" data-vista hidden>
+  <div class="fila">
+    <div style="flex:1">
+      <h1 tabindex="-1">Mis tareas</h1>
+      <div class="muted">Tocá una tarea para verla. Tocá el círculo cuando la termines.</div>
+    </div>
+    <button class="hablar" data-habla="instrTareas" aria-label="Escuchar las instrucciones"><svg class="ic" aria-hidden="true"><use href="#ic-parlante"/></svg></button>
+  </div>
+  <div class="filtros" role="group" aria-label="Filtrar tareas">
+    <button class="chip" data-filtro="todas" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#ic-todas"/></svg>Todas</button>
+    <button class="chip" data-filtro="pendiente" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#ic-reloj"/></svg>Por hacer</button>
+    <button class="chip" data-filtro="atrasada" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#ic-alerta"/></svg>Atrasadas</button>
+    <button class="chip" data-filtro="hecha" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#ic-listo"/></svg>Hechas</button>
+  </div>
+  <div class="lista" id="lista-tareas"></div>
+</section>
+
+<!-- ===== DETALLE DE TAREA ===== -->
+<section id="vista-tarea" data-vista hidden>
+  <a class="volver" href="#tareas"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Tareas</a>
+  <div id="detalle-tarea"></div>
+</section>
+
+<!-- ===== NOTAS (de 0 a 100) ===== -->
+<section id="vista-notas" data-vista hidden>
+  <h1 tabindex="-1">Mis notas</h1>
+  <div class="card total" style="margin-top:12px">
+    <svg class="ic" aria-hidden="true"><use href="#ic-estrella"/></svg>
+    <div style="flex:1"><div class="num" id="n-total">0</div><div style="opacity:.9">promedio de este período</div></div>
+    <button class="hablar" id="n-hablar" aria-label="Escuchar mi promedio"><svg class="ic" aria-hidden="true"><use href="#ic-parlante"/></svg></button>
+  </div>
+  <h2>Por materia</h2>
+  <div class="lista" id="lista-notas"></div>
+  <div class="card leyenda">
+    <div class="fila"><span class="muestra" style="background:var(--verde-btn)"></span><strong>90 a 100</strong> ¡Excelente!</div>
+    <div class="fila"><span class="muestra" style="background:var(--verde-btn)"></span><strong>70 a 89</strong> ¡Muy bien!</div>
+    <div class="fila"><span class="muestra" style="background:#D98A00"></span><strong>Menos de 70</strong> ¡Vamos a practicar!</div>
+    <div class="fila"><span class="muestra" style="background:none;border-left:2px solid var(--suave);border-radius:0;width:2px"></span>La rayita marca el 65: con esa nota se aprueba.</div>
+  </div>
+</section>
+
+<!-- ===== MENSAJES: elegir docente ===== -->
+<section id="vista-mensajes" data-vista hidden>
+  <div class="fila">
+    <div style="flex:1">
+      <h1 tabindex="-1">Mensajes</h1>
+      <div class="muted">¿Con quién querés hablar? Tocá su cara.</div>
+    </div>
+    <button class="hablar" data-habla="instrMensajes" aria-label="Escuchar las instrucciones"><svg class="ic" aria-hidden="true"><use href="#ic-parlante"/></svg></button>
+  </div>
+  <div class="lista" id="lista-docentes" style="margin-top:16px"></div>
+</section>
+
+<!-- ===== CONVERSACIÓN con un docente ===== -->
+<section id="vista-chat" data-vista hidden>
+  <a class="volver" href="#mensajes"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Mensajes</a>
+  <div class="chat-cab" id="chat-cab"></div>
+  <div class="hilo" id="hilo" aria-live="polite"></div>
+
+  <form class="card composer" id="form-msg" novalidate>
+    <div class="paso">Mensajes rápidos</div>
+    <div class="frases" id="frases"></div>
+
+    <div class="paso">Tu mensaje</div>
+    <div class="dictado">
+      <textarea id="m-texto" maxlength="500" aria-label="Mensaje" placeholder="Tocá el micrófono y hablá, o escribí aquí…"></textarea>
+      <div class="lado">
+        <button type="button" class="micro" id="micro" aria-label="Dictar con la voz" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#ic-micro"/></svg></button>
+        <button type="button" class="hablar" id="leer-msg" aria-label="Escuchar mi mensaje"><svg class="ic" aria-hidden="true"><use href="#ic-parlante"/></svg></button>
+      </div>
+    </div>
+    <div class="estado-mic" id="estado-mic" aria-live="polite"></div>
+
+    <button class="btn" type="submit"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l16-8-6 16-3-7-7-1z"/></svg>Enviar</button>
+  </form>
+</section>
+
+</main>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-titulo"><div id="dlg-cuerpo"></div></dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="datos.js"></script>
+<script>
+/* ===== Estado guardado en el navegador (localStorage) ===== */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem("miescuela."+k); return v ? JSON.parse(v) : d; }catch{ return d; } },
+  set(k, v){ try{ localStorage.setItem("miescuela."+k, JSON.stringify(v)); }catch{} }
+};
+let hechas    = store.get("hechas", TAREAS.filter(t=>t.hechaInicial).map(t=>t.id));
+let enviados  = store.get("enviados", []).map(m => ({...m, visto:true})); // lo enviado antes ya lo vio la docente
+let leidos    = store.get("leidos", []);
+let vozActiva = store.get("voz", true);
+let filtro = "todas", docente = null, tareaId = null;
+
+/* ===== Utilidades ===== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ic = (nombre, extra="") => `<svg class="ic" aria-hidden="true" ${extra}><use href="#ic-${nombre}"/></svg>`;
+const linea = p => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+const hora = iso => new Date(iso).toLocaleDateString("es-CR",{weekday:"short", day:"numeric", month:"short"});
+const botonHablar = (texto, etiqueta="Escuchar") => `<button class="hablar" data-decir="${esc(texto)}" aria-label="${esc(etiqueta)}">${ic("parlante")}</button>`;
+const avatar = (d, tam="") => `<div class="avatar ${tam}">${ic(d.cara, `style="color:${d.pelo}"`)}</div>`;
+
+function estadoTarea(t){
+  if (hechas.includes(t.id)) return "hecha";
+  return dias(t.entrega) < 0 ? "atrasada" : "pendiente";
+}
+// El tiempo se muestra con dibujos: sol = hoy, luna = mañana (después de dormir), calendario con puntitos = días que faltan.
+function tiempo(t){
+  const e = estadoTarea(t), d = dias(t.entrega);
+  if (e === "hecha") return {clase:"e-hecha", ico:"listo", texto:"Hecha"};
+  if (d < 0)  return {clase:"e-atras", ico:"alerta", texto:"Atrasada"};
+  if (d === 0) return {clase:"e-riesgo", ico:"sol", texto:"Hoy"};
+  if (d === 1) return {clase:"e-riesgo", ico:"luna", texto:"Mañana"};
+  return {clase:"e-pend", ico:"calendario", texto:`${d} días`, puntos:Math.min(d,7)};
+}
+function pildora(t){
+  const x = tiempo(t);
+  const puntos = x.puntos ? `<span class="puntos" aria-hidden="true">${"<i></i>".repeat(x.puntos)}</span>` : "";
+  return `<span class="estado ${x.clase}">${ic(x.ico)}${x.texto}${puntos}</span>`;
+}
+
+function hiloDe(id){ return [...MENSAJES_INICIALES, ...enviados].filter(m=>m.doc===id).sort((a,b)=>a.fecha.localeCompare(b.fecha)); }
+function nuevosDe(id){ return MENSAJES_INICIALES.filter(m=>m.doc===id && m.nuevo && !leidos.includes(m.id)).length; }
+function sinLeer(){ return DOCENTES.reduce((a,d)=>a+nuevosDe(d.id), 0); }
+function pendientes(){ return TAREAS.filter(t=>estadoTarea(t)!=="hecha"); }
+
+function toast(texto, accion){
+  const el = $("#toast");
+  el.innerHTML = `<span>${esc(texto)}</span>` + (accion ? `<button type="button">${esc(accion.texto)}</button>` : "");
+  if (accion) el.querySelector("button").onclick = () => { el.hidden = true; accion.fn(); };
+  el.hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(()=>el.hidden=true, accion ? 6000 : 2500);
+}
+
+/* ===== Diálogos ===== */
+function abrirDialogo(html){
+  $("#dlg-cuerpo").innerHTML = html;
+  const d = $("#dlg"); if (!d.open) d.showModal();
+  d.querySelector(".btn")?.focus();
+}
+function cerrarDialogo(){ $("#dlg").close(); }
+
+/* ===== Voz =====
+   1. Si la frase tiene audio grabado (audio/<id>.mp3, voz neuronal costarricense), se reproduce.
+   2. Si no (por ejemplo, lo que dictó el niño), se usa la voz del navegador (speechSynthesis),
+      eligiendo la voz en español más natural del dispositivo. */
+const voz = {
+  soportada: "speechSynthesis" in window,
+  audios: new Set(),            // ids que aparecen en audio/indice.json
+  reproductor: new Audio(),
+  turno: 0,                     // cada vez que se habla, se cancela lo anterior
+  cargarAudios(){
+    fetch("audio/indice.json").then(r => r.ok ? r.json() : []).then(ids => ids.forEach(id => this.audios.add(id))).catch(() => {});
+  },
+  partes: partesDe,
+
+  // Se le da puntos a cada voz del navegador y se usa la más natural: las neuronales de Edge
+  // ("Natural"), las mejoradas de Apple ("Premium"/"Enhanced"), las de Google, y luego las
+  // voces con nombre de persona (Paulina, Mónica…). Las de efectos de macOS (Eddy, Grandma…) quedan al final.
+  puntaje(v, idioma){
+    const n = v.name, lang = v.lang.replace("_","-");
+    let p = 0;
+    if (/natural|neural|online/i.test(n)) p += 50;
+    if (/premium|enhanced|mejorad/i.test(n)) p += 40;
+    if (/google/i.test(n)) p += 30;
+    if (/paulina|m[oó]nica|dalia|elena|sabina|marisol|helena|luc[ií]a|camila|valentina|salom[eé]|ximena|andrea|isabela|paloma|renata|catalina|samantha|ava|allison|jenny|aria/i.test(n)) p += 20;
+    if (/eddy|flo\b|grandma|grandpa|reed|rocko|sandy|shelley|bad news|bells|boing|bubbles|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|ralph|kathy|cellos/i.test(n)) p -= 100;
+    if (idioma === "es"){
+      if (lang === "es-CR") p += 15;
+      else if (/^es-(MX|US|419|CO|AR|CL|PE)/.test(lang)) p += 10; // acento latinoamericano
+    } else if (lang === "en-US") p += 10;
+    return p;
+  },
+  elegir(idioma){
+    this.elegidas ??= {};
+    if (this.elegidas[idioma]) return this.elegidas[idioma];
+    const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith(idioma));
+    if (!vs.length) return null;
+    return this.elegidas[idioma] = vs.sort((a,b) => this.puntaje(b, idioma) - this.puntaje(a, idioma))[0];
+  },
+
+  parar(){
+    this.turno++;
+    this.reproductor.pause();
+    if (this.soportada) speechSynthesis.cancel();
+    document.querySelectorAll(".hablar.hablando").forEach(b => b.classList.remove("hablando"));
+  },
+  async decir(texto, boton){
+    this.parar();
+    const turno = this.turno;
+    if (boton) boton.classList.add("hablando");
+    for (const parte of this.partes(texto)){
+      if (turno !== this.turno) return;
+      await this.decirParte(parte);
+    }
+    if (turno === this.turno && boton) boton.classList.remove("hablando");
+  },
+  decirParte(parte){
+    const id = idAudio(parte);
+    if (!this.audios.has(id)) return this.sintetizar(parte);
+    return new Promise(listo => {
+      const a = this.reproductor;
+      a.onended = listo;
+      a.onerror = () => this.sintetizar(parte).then(listo);
+      a.src = `audio/${id}.mp3`;
+      a.play().catch(() => this.sintetizar(parte).then(listo));
+    });
+  },
+  sintetizar(parte){
+    return new Promise(listo => {
+      if (!this.soportada) return listo();
+      const ingles = parte.startsWith("[en]"), texto = ingles ? parte.slice(4) : parte;
+      const v = this.elegir(ingles ? "en" : "es");
+      if (!v && !ingles && !this.sinVozAvisado){ this.sinVozAvisado = true; toast("Este dispositivo no tiene voz en español"); }
+      const u = new SpeechSynthesisUtterance(texto);
+      if (v){ u.voice = v; u.lang = v.lang; } else u.lang = ingles ? "en-US" : "es-CR";
+      u.rate = .92;   // un poco más lento para niños
+      u.onend = u.onerror = () => listo();
+      speechSynthesis.speak(u);
+    });
+  },
+  // Solo habla sola si la ayuda de voz está encendida; los botones de parlante siempre hablan.
+  avisar(texto){ if (vozActiva) this.decir(texto); }
+};
+
+// Algunos navegadores cargan las voces después; cuando llegan, se vuelve a elegir.
+if (voz.soportada) speechSynthesis.addEventListener("voiceschanged", () => { voz.elegidas = {}; });
+
+function pintarVozToggle(){
+  $("#voz-toggle").setAttribute("aria-pressed", vozActiva);
+  $("#voz-toggle").setAttribute("aria-label", vozActiva ? "Ayuda de voz encendida" : "Ayuda de voz apagada");
+}
+
+/* ===== Pintar cada vista ===== */
+function tarjetaTarea(t){
+  const m = MATERIAS[t.m], e = estadoTarea(t);
+  return `<div class="card tarea ${e==="hecha"?"hecha":""}" data-abrir="#tarea/${t.id}">
+    <div class="materia-ico" style="background:${m.fondo}">${ic(m.ico)}</div>
+    <div class="cuerpo">
+      <a class="nombre" href="#tarea/${t.id}">${esc(t.titulo)}</a>
+      <div class="meta">${m.nombre}</div>
+      <div class="pie">${pildora(t)}${botonHablar(HABLA.tarjeta(t, e==="hecha"), "Escuchar tarea: " + t.titulo)}</div>
+    </div>
+    <button class="check" data-id="${t.id}" aria-pressed="${e==="hecha"}" aria-label="Terminé: ${esc(t.titulo)}">${linea('<path d="M5 12l5 5 9-10"/>')}</button>
+  </div>`;
+}
+
+function pintarInicio(){
+  $("#hoy").textContent = HOY.toLocaleDateString("es-CR",{weekday:"long", day:"numeric", month:"long"});
+  const pend = pendientes();
+  $("#r-pend").textContent = pend.length;
+  $("#r-promedio").textContent = promedio();
+  $("#r-msg").textContent = sinLeer();
+  const prox = pend.filter(t=>dias(t.entrega)>=0).sort((a,b)=>a.entrega.localeCompare(b.entrega))[0];
+  $("#r-proxima").innerHTML = prox ? tarjetaTarea(prox) : `<div class="card vacio">¡No tenés entregas pendientes! 🎉</div>`;
+}
+
+function pintarTareas(){
+  document.querySelectorAll("[data-filtro]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.filtro===filtro));
+  const lista = TAREAS
+    .filter(t => filtro==="todas" || estadoTarea(t)===filtro)
+    .sort((a,b)=>{ const o={atrasada:0,pendiente:1,hecha:2}; return o[estadoTarea(a)]-o[estadoTarea(b)] || a.entrega.localeCompare(b.entrega); });
+  $("#lista-tareas").innerHTML = lista.length ? lista.map(tarjetaTarea).join("") : `<div class="card vacio">No hay tareas aquí.</div>`;
+}
+
+function pintarTarea(){
+  const t = TAREAS.find(x=>x.id===tareaId);
+  if (!t){ location.hash = "#tareas"; return; }
+  const m = MATERIAS[t.m], hecha = estadoTarea(t) === "hecha";
+  $("#detalle-tarea").innerHTML = `
+    <div class="card">
+      <div class="detalle-cab">
+        <div class="materia-ico" style="background:${m.fondo}">${ic(m.ico)}</div>
+        <div style="flex:1">
+          <div class="meta" style="font-weight:700">${m.nombre}</div>
+          <h1 tabindex="-1" style="margin:2px 0 6px">${esc(t.titulo)}</h1>
+          ${pildora(t)}
+        </div>
+      </div>
+      <div class="bloque">
+        <div class="bloque-tit">¿Qué hay que hacer?${botonHablar(HABLA.detalle(t, hecha), "Escuchar qué hay que hacer")}</div>
+        <div style="font-size:18px">${esc(t.detalle)}</div>
+      </div>
+      <div class="bloque">
+        <div class="bloque-tit">Vas a necesitar${botonHablar(HABLA.materiales(t), "Escuchar materiales")}</div>
+        <div class="materiales">${t.materiales.map(([e,n])=>`<div class="material"><span class="emo" aria-hidden="true">${e}</span>${esc(n)}</div>`).join("")}</div>
+      </div>
+      <div class="bloque">
+        ${hecha
+          ? `<button class="btn gris" data-alternar="${t.id}">${ic("listo")}Hecha · Deshacer</button>`
+          : `<button class="btn verde" data-alternar="${t.id}">${linea('<path d="M5 12l5 5 9-10"/>')}¡Ya la terminé!</button>`}
+      </div>
+    </div>`;
+}
+
+function pintarNotas(){
+  $("#n-total").textContent = promedio();
+  $("#n-hablar").dataset.decir = HABLA.total();
+  $("#lista-notas").innerHTML = Object.entries(NOTAS).map(([k,n])=>{
+    const m = MATERIAS[k], e = nivel(n);
+    const color = e === 1 ? "var(--ambar)" : "var(--verde)", barra = e === 1 ? "#D98A00" : "var(--verde-btn)";
+    return `<div class="card nota">
+      <div class="materia-ico" style="background:${m.fondo}">${ic(m.ico)}</div>
+      <div>
+        <strong>${m.nombre}</strong>
+        <div class="barra" aria-hidden="true"><span style="width:${n}%;background:${barra}"></span><i class="minimo" style="left:${NOTA_MINIMA}%"></i></div>
+        <div class="animo" style="color:${color}">${ANIMO[e]}</div>
+      </div>
+      <div class="valor" style="color:${color}">${n}</div>
+      ${botonHablar(HABLA.nota(k), "Escuchar " + m.nombre)}
+    </div>`;
+  }).join("");
+}
+
+function pintarDocentes(){
+  $("#lista-docentes").innerHTML = DOCENTES.map(d=>{
+    const hilo = hiloDe(d.id), ult = hilo.at(-1), n = nuevosDe(d.id);
+    const resumen = ult ? (ult.yo ? "Vos: " : "") + ult.texto : "Todavía no hay mensajes.";
+    return `<div class="card docente-fila" data-abrir="#chat/${d.id}">
+      ${avatar(d, "grande")}
+      <div class="cuerpo">
+        <a class="nombre" href="#chat/${d.id}" style="font-size:18px">${esc(d.nombre)}</a>
+        <div class="meta">${esc(d.rol)}</div>
+        <div class="texto">${esc(resumen)}</div>
+      </div>
+      ${n ? `<span class="nuevos" aria-label="${n} mensaje nuevo">${n}</span>` : ""}
+      ${botonHablar(HABLA.docente(d, n > 0), "Escuchar " + d.nombre)}
+    </div>`;
+  }).join("");
+}
+
+function pintarChat(){
+  const d = docenteDe(docente);
+  if (!d){ location.hash = "#mensajes"; return; }
+  $("#chat-cab").innerHTML = `${avatar(d, "grande")}
+    <div class="cuerpo"><h1 tabindex="-1">${esc(d.nombre)}</h1><div class="meta">${esc(d.rol)}</div></div>`;
+  const hilo = hiloDe(d.id);
+  $("#hilo").innerHTML = hilo.length ? hilo.map(m=>{
+    const estado = m.yo ? (m.visto ? `<span class="visto">✓✓ Visto</span>` : `<span class="enviado">✓ Enviado</span>`) : "";
+    return `<div class="burbuja ${m.yo ? "mia" : "suya"}">
+      <div class="b-texto">${esc(m.texto)}</div>
+      <div class="b-pie">${hora(m.fecha)} ${estado}${botonHablar(m.yo ? HABLA.enviado(m) : HABLA.recibido(d, m), "Escuchar mensaje")}</div>
+    </div>`;
+  }).join("") : `<div class="card vacio">Todavía no hay mensajes. ¡Saludá a ${esc(d.nombre)}!</div>`;
+  $("#frases").innerHTML = FRASES.map((f,i)=>`<button type="button" class="frase" data-frase="${i}"><span class="emo" aria-hidden="true">${f.emo}</span>${esc(f.texto)}</button>`).join("");
+  // Al abrir la conversación, los mensajes nuevos de esa docente quedan leídos.
+  const nuevos = MENSAJES_INICIALES.filter(m=>m.doc===d.id && m.nuevo && !leidos.includes(m.id)).map(m=>m.id);
+  if (nuevos.length){ leidos = [...leidos, ...nuevos]; store.set("leidos", leidos); }
+}
+
+function pintarBadges(){
+  const pend = pendientes().length, sl = sinLeer();
+  $("#badge-tareas").textContent = pend; $("#badge-tareas").hidden = !pend;
+  $("#badge-msg").textContent = sl;      $("#badge-msg").hidden = !sl;
+}
+
+/* ===== Navegación por #pestaña (funciona con el botón Atrás) ===== */
+const VISTAS = {inicio:pintarInicio, tareas:pintarTareas, tarea:pintarTarea, notas:pintarNotas, mensajes:pintarDocentes, chat:pintarChat};
+const PESTANA = {tarea:"tareas", chat:"mensajes"};
+const BIENVENIDA = {
+  inicio:   () => HABLA.vistaInicio,
+  tareas:   () => HABLA.vistaTareas(pendientes().length),
+  tarea:    () => { const t = TAREAS.find(x=>x.id===tareaId); return t ? HABLA.vistaTarea(t) : ""; },
+  notas:    () => HABLA.vistaNotas(),
+  mensajes: () => HABLA.vistaMensajes,
+  chat:     () => { const d = docenteDe(docente); return d ? HABLA.vistaChat(d) : ""; }
+};
+let vistaActual = "inicio";
+
+function leerRuta(){
+  const [v, id] = location.hash.slice(1).split("/");
+  vistaActual = VISTAS[v] ? v : "inicio";
+  if (vistaActual === "tarea") tareaId = +id;
+  if (vistaActual === "chat") docente = id;
+}
+// Vuelve a pintar la vista actual sin mover el scroll (después de una acción).
+function pintar(){ VISTAS[vistaActual](); pintarBadges(); }
+
+function ir(porUsuario){
+  leerRuta();
+  if (porUsuario) dictado.parar();
+  const tab = PESTANA[vistaActual] || vistaActual;
+  document.querySelectorAll("[data-vista]").forEach(s=>s.hidden = s.id!=="vista-"+vistaActual);
+  document.querySelectorAll("nav.tabs a").forEach(a=> a.dataset.tab===tab ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"));
+  pintar();
+  window.scrollTo(0,0);
+  if (porUsuario){
+    // Mover el foco al título para que los lectores de pantalla anuncien la nueva pantalla.
+    $(`#vista-${vistaActual} h1`)?.focus({preventScroll:true});
+    voz.avisar(BIENVENIDA[vistaActual]());
+  }
+}
+addEventListener("hashchange", () => ir(true));
+
+/* ===== Acciones ===== */
+function alternarTarea(id){
+  const yaEstaba = hechas.includes(id);
+  hechas = yaEstaba ? hechas.filter(x=>x!==id) : [...hechas, id];
+  store.set("hechas", hechas);
+  pintar();
+  if (!yaEstaba){
+    toast("¡Bien hecho! Tarea lista ✓", {texto:"Deshacer", fn:()=>alternarTarea(id)});
+    voz.avisar(HABLA.bienHecho);
+  } else {
+    voz.avisar(HABLA.deshecha);
+  }
+}
+
+function confirmarEnvio(){
+  const texto = $("#m-texto").value.trim(), d = docenteDe(docente);
+  if (!texto){ toast("Primero decí o escribí tu mensaje"); voz.avisar(HABLA.primero); return; }
+  dictado.parar();
+  abrirDialogo(`<div class="dlg-centro">
+    ${avatar(d, "enorme")}
+    <h2 id="dlg-titulo">¿Le mandamos este mensaje a ${esc(d.nombre)}?</h2>
+    <div class="cita fila"><span style="flex:1">“${esc(texto)}”</span>${botonHablar(HABLA.confirmar(d) + "|" + limpio(texto), "Escuchar")}</div>
+    <div class="dlg-botones columna">
+      <button type="button" class="btn verde" data-confirmar="si">${linea('<path d="M4 12l16-8-6 16-3-7-7-1z"/>')}Sí, enviar</button>
+      <button type="button" class="btn gris" data-confirmar="no">✏️ Cambiar</button>
+    </div></div>`);
+  voz.avisar(HABLA.confirmar(d) + "|" + limpio(texto));
+}
+
+function enviar(){
+  const texto = $("#m-texto").value.trim(), d = docenteDe(docente);
+  const ahora = new Date(), iso = new Date(ahora - ahora.getTimezoneOffset()*6e4).toISOString().slice(0,16);
+  const msg = {id:"e"+Date.now(), doc:d.id, texto, fecha:iso, yo:true, visto:false};
+  enviados = [...enviados, msg];
+  store.set("enviados", enviados);
+  $("#m-texto").value = ""; $("#estado-mic").textContent = "";
+  cerrarDialogo();
+  pintar();
+  toast("Mensaje enviado ✓");
+  voz.avisar(HABLA.llego(d));
+  // Simula que la docente lo abre a los pocos segundos (en la app real lo diría el servidor).
+  setTimeout(()=>{ msg.visto = true; store.set("enviados", enviados); if (vistaActual==="chat") pintar(); }, 4000);
+}
+
+/* ===== Bienvenida / ayuda (primera vez) ===== */
+function ayuda(i){
+  const p = PASOS_AYUDA[i], ultimo = i === PASOS_AYUDA.length-1;
+  abrirDialogo(`<div class="dlg-centro">
+    <div class="grande-ic">${ic(p.ic, 'style="width:104px;height:104px"')}</div>
+    <h2 id="dlg-titulo">${p.titulo}</h2>
+    <p style="font-size:17px">${p.texto}</p>
+    <div class="pasos-ayuda" aria-hidden="true">${PASOS_AYUDA.map((_,j)=>`<i class="${j===i?"on":""}"></i>`).join("")}</div>
+    <div class="dlg-botones">
+      ${botonHablar(HABLA.ayuda(p), "Escuchar")}
+      <button type="button" class="btn" data-ayuda="${ultimo ? "fin" : i+1}">${ultimo ? "¡Empezar!" : "Siguiente →"}</button>
+    </div></div>`);
+}
+
+/* ===== Dictado: voz a texto (SpeechRecognition, viene en Chrome, Edge y Safari) ===== */
+const dictado = {
+  Rec: window.SpeechRecognition || window.webkitSpeechRecognition,
+  rec: null,
+  pedir(){
+    // La primera vez, un adulto tiene que estar presente para dar el permiso del micrófono.
+    if (store.get("micOk", false)) return this.iniciar();
+    abrirDialogo(`<div class="dlg-centro">
+      <div class="grande-ic" style="color:#E5533D">${ic("micro", 'style="width:96px;height:96px"')}</div>
+      <h2 id="dlg-titulo">Pedile ayuda a un adulto</h2>
+      <p style="font-size:17px">Para usar el micrófono, un adulto tiene que dar permiso. Lo que digás se va a convertir en letras.</p>
+      <div class="dlg-botones">
+        ${botonHablar(HABLA.permiso, "Escuchar")}
+        <button type="button" class="btn" data-permiso-mic>Un adulto me ayudó ✓</button>
+      </div></div>`);
+    voz.avisar(HABLA.permisoAviso);
+  },
+  iniciar(){
+    const caja = $("#m-texto"), base = caja.value.trim();
+    voz.parar();
+    this.rec = new this.Rec();
+    this.rec.lang = "es-CR";
+    this.rec.interimResults = true;   // muestra las palabras mientras hablás
+    this.rec.continuous = true;
+    this.rec.onresult = e => {
+      let dicho = "";
+      for (const r of e.results) dicho += r[0].transcript;
+      dicho = dicho.trim();
+      caja.value = base ? base + " " + dicho : dicho.charAt(0).toUpperCase() + dicho.slice(1);
+    };
+    this.rec.onerror = e => {
+      const msg = HABLA.errorMic[e.error] || HABLA.errorMic.otro;
+      $("#estado-mic").textContent = msg;
+      voz.avisar(msg);
+    };
+    this.rec.onend = () => { this.rec = null; this.pintar(); };
+    this.rec.start();
+    this.pintar();
+  },
+  parar(){ if (this.rec) this.rec.stop(); },
+  pintar(){
+    const b = $("#micro"), on = !!this.rec;
+    b.classList.toggle("escuchando", on);
+    b.setAttribute("aria-pressed", on);
+    b.setAttribute("aria-label", on ? "Dejar de dictar" : "Dictar con la voz");
+    if (on) $("#estado-mic").textContent = "Te estoy escuchando… tocá el micrófono otra vez para terminar.";
+    else if ($("#estado-mic").textContent.startsWith("Te estoy")) $("#estado-mic").textContent = "";
+  }
+};
+if (!dictado.Rec){
+  $("#micro").disabled = true;
+  $("#estado-mic").textContent = "Este navegador no permite dictar. Probá con Chrome, Edge o Safari.";
+}
+
+/* ===== Eventos ===== */
+document.addEventListener("click", e=>{
+  const h = e.target.closest(".hablar[data-decir], .hablar[data-habla]");
+  if (h){ voz.decir(h.dataset.decir ?? HABLA[h.dataset.habla], h); return; }
+  const ch = e.target.closest("[data-id].check, [data-alternar]");
+  if (ch){ alternarTarea(+(ch.dataset.id || ch.dataset.alternar)); return; }
+  const f = e.target.closest("[data-filtro]");
+  if (f){ filtro = f.dataset.filtro; pintarTareas(); voz.avisar(f.textContent.trim()); return; }
+  const fr = e.target.closest("[data-frase]");
+  if (fr){
+    // Se agrega al final para no borrar lo que ya se dictó.
+    const t = FRASES[+fr.dataset.frase].texto, caja = $("#m-texto");
+    const antes = caja.value.trim();
+    caja.value = !antes ? t : antes + (/[.!?¡¿]$/.test(antes) ? " " : ". ") + t;
+    voz.avisar(t); return;
+  }
+  const c = e.target.closest("[data-confirmar]");
+  if (c){ if (c.dataset.confirmar === "si") enviar(); else { cerrarDialogo(); $("#m-texto").focus(); } return; }
+  const a = e.target.closest("[data-ayuda]");
+  if (a){ if (a.dataset.ayuda === "fin"){ store.set("bienvenida", true); cerrarDialogo(); voz.avisar(HABLA.empezar); } else ayuda(+a.dataset.ayuda); return; }
+  if (e.target.closest("[data-permiso-mic]")){ store.set("micOk", true); cerrarDialogo(); dictado.iniciar(); return; }
+  // Tocar cualquier parte de una tarjeta la abre (los botones de adentro ya se atendieron arriba).
+  const ab = e.target.closest("[data-abrir]");
+  if (ab && !e.target.closest("a,button")) location.hash = ab.dataset.abrir;
+});
+
+$("#voz-toggle").addEventListener("click", ()=>{
+  vozActiva = !vozActiva; store.set("voz", vozActiva); pintarVozToggle();
+  if (vozActiva) voz.decir(HABLA.vozOn); else voz.parar();
+});
+$("#btn-ayuda").addEventListener("click", ()=> ayuda(0));
+$("#micro").addEventListener("click", ()=> dictado.rec ? dictado.parar() : dictado.pedir());
+$("#leer-msg").addEventListener("click", e=>{
+  const t = $("#m-texto").value.trim();
+  voz.decir(t ? limpio(t) : HABLA.sinMensaje, e.currentTarget);
+});
+$("#form-msg").addEventListener("submit", e=>{ e.preventDefault(); confirmarEnvio(); });
+
+voz.cargarAudios();
+pintarVozToggle();
+ir(false);
+if (!store.get("bienvenida", false)) ayuda(0);
+</script>
+</body>
+</html>

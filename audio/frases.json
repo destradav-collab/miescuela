@@ -1,0 +1,462 @@
+[
+ {
+  "id": "38ed200b",
+  "texto": "¡Hola, Sofía! ¿Qué querés hacer hoy? Tocá el cuaderno para ver tus tareas, la estrella para ver tus notas, o la carta para escribirle a tu maestra."
+ },
+ {
+  "id": "5bc2a705",
+  "texto": "Tocá una tarea para verla. Tocá el círculo cuando la termines."
+ },
+ {
+  "id": "594221b9",
+  "texto": "¿Con quién querés hablar? Tocá la cara de tu maestra o maestro."
+ },
+ {
+  "id": "6adb341c",
+  "texto": "Inicio."
+ },
+ {
+  "id": "4caf1a71",
+  "texto": "Mensajes. ¿Con quién querés hablar? Tocá su cara."
+ },
+ {
+  "id": "9571c800",
+  "texto": "Pedile ayuda a un adulto. Para usar el micrófono, un adulto tiene que dar permiso."
+ },
+ {
+  "id": "7e9d5d52",
+  "texto": "Pedile ayuda a un adulto para usar el micrófono."
+ },
+ {
+  "id": "4e934f46",
+  "texto": "Todavía no hay mensaje. Tocá el micrófono rojo y hablá."
+ },
+ {
+  "id": "f3bd7452",
+  "texto": "Primero tocá el micrófono rojo y decí tu mensaje."
+ },
+ {
+  "id": "93f51672",
+  "texto": "¡Bien hecho!"
+ },
+ {
+  "id": "ed3c882b",
+  "texto": "Listo, la tarea quedó por hacer."
+ },
+ {
+  "id": "67474dc4",
+  "texto": "¡A empezar!"
+ },
+ {
+  "id": "9f95c3ba",
+  "texto": "Ayuda de voz encendida."
+ },
+ {
+  "id": "88b0cf18",
+  "texto": "Hay que dar permiso al micrófono."
+ },
+ {
+  "id": "4286c91f",
+  "texto": "No te escuché. Probá de nuevo."
+ },
+ {
+  "id": "9cb00007",
+  "texto": "Se necesita internet para dictar."
+ },
+ {
+  "id": "83821bae",
+  "texto": "No se pudo escuchar."
+ },
+ {
+  "id": "ddc067a0",
+  "texto": "Todas"
+ },
+ {
+  "id": "848ea09d",
+  "texto": "Por hacer"
+ },
+ {
+  "id": "3745527b",
+  "texto": "Atrasadas"
+ },
+ {
+  "id": "5727f54d",
+  "texto": "Hechas"
+ },
+ {
+  "id": "6eaccb6b",
+  "texto": "Vos dijiste:"
+ },
+ {
+  "id": "9edbda45",
+  "texto": "Tus tareas. ¡Ya hiciste todas!"
+ },
+ {
+  "id": "7bfbd6a2",
+  "texto": "Tus tareas. Tenés 1 por hacer."
+ },
+ {
+  "id": "a6eaf371",
+  "texto": "Tus tareas. Tenés 2 por hacer."
+ },
+ {
+  "id": "511389e4",
+  "texto": "Tus tareas. Tenés 3 por hacer."
+ },
+ {
+  "id": "14c7411b",
+  "texto": "Tus tareas. Tenés 4 por hacer."
+ },
+ {
+  "id": "3756e666",
+  "texto": "Tus tareas. Tenés 5 por hacer."
+ },
+ {
+  "id": "69658885",
+  "texto": "Tus tareas. Tenés 6 por hacer."
+ },
+ {
+  "id": "dd9f00d8",
+  "texto": "Tus tareas. Tenés 7 por hacer."
+ },
+ {
+  "id": "527e57a5",
+  "texto": "Matemáticas. Contar y colorear del 1 al 20. Se entrega mañana."
+ },
+ {
+  "id": "4b4ef6f1",
+  "texto": "Contar y colorear del 1 al 20."
+ },
+ {
+  "id": "6e979e4e",
+  "texto": "Contá los dibujos de la hoja y pintá cada número con un color diferente."
+ },
+ {
+  "id": "775aeeed",
+  "texto": "Se entrega mañana."
+ },
+ {
+  "id": "4c45ac56",
+  "texto": "Matemáticas. Contar y colorear del 1 al 20. Ya la hiciste. ¡Muy bien!"
+ },
+ {
+  "id": "55853395",
+  "texto": "Ya la hiciste."
+ },
+ {
+  "id": "2505f7ad",
+  "texto": "Vas a necesitar: Crayolas, Hoja de la maestra."
+ },
+ {
+  "id": "98bd13bf",
+  "texto": "Matemáticas. Contar y colorear del 1 al 20."
+ },
+ {
+  "id": "f78a106e",
+  "texto": "Español. Practicar las vocales. Se entrega en 2 días."
+ },
+ {
+  "id": "53e62aa3",
+  "texto": "Practicar las vocales."
+ },
+ {
+  "id": "eae8457f",
+  "texto": "Escribí cada vocal tres veces en tu cuaderno: a, e, i, o, u."
+ },
+ {
+  "id": "55ec6b60",
+  "texto": "Se entrega en 2 días."
+ },
+ {
+  "id": "1d4f7e30",
+  "texto": "Español. Practicar las vocales. Ya la hiciste. ¡Muy bien!"
+ },
+ {
+  "id": "444e4cac",
+  "texto": "Vas a necesitar: Cuaderno, Lápiz."
+ },
+ {
+  "id": "34a40b95",
+  "texto": "Español. Practicar las vocales."
+ },
+ {
+  "id": "16712b04",
+  "texto": "Ciencias. Traer una hoja de árbol. Se entrega en 7 días."
+ },
+ {
+  "id": "d3647437",
+  "texto": "Traer una hoja de árbol."
+ },
+ {
+  "id": "0f38c04c",
+  "texto": "Buscá una hoja de árbol con un adulto y traela a la escuela."
+ },
+ {
+  "id": "e2398c0d",
+  "texto": "Se entrega en 7 días."
+ },
+ {
+  "id": "17dd0943",
+  "texto": "Ciencias. Traer una hoja de árbol. Ya la hiciste. ¡Muy bien!"
+ },
+ {
+  "id": "7a7581e6",
+  "texto": "Vas a necesitar: Hoja de árbol, Bolsita."
+ },
+ {
+  "id": "9a6f67f0",
+  "texto": "Ciencias. Traer una hoja de árbol."
+ },
+ {
+  "id": "d6774754",
+  "texto": "Estudios Sociales. Dibujar a mi familia. Ya pasó el día de entrega."
+ },
+ {
+  "id": "6d1bb6c6",
+  "texto": "Dibujar a mi familia."
+ },
+ {
+  "id": "ae9fe4af",
+  "texto": "Dibujá a las personas que viven con vos y pintalas."
+ },
+ {
+  "id": "7be596da",
+  "texto": "Ya pasó el día de entrega."
+ },
+ {
+  "id": "55b1fb70",
+  "texto": "Estudios Sociales. Dibujar a mi familia. Ya la hiciste. ¡Muy bien!"
+ },
+ {
+  "id": "6900f58d",
+  "texto": "Vas a necesitar: Crayolas, Hoja blanca."
+ },
+ {
+  "id": "fec54fd5",
+  "texto": "Estudios Sociales. Dibujar a mi familia."
+ },
+ {
+  "id": "05bfff3e",
+  "texto": "Inglés. Aprender los colores en inglés. Se entrega en 5 días."
+ },
+ {
+  "id": "d98cae01",
+  "texto": "Aprender los colores en inglés."
+ },
+ {
+  "id": "5b729984",
+  "texto": "Repetí con un adulto los colores en inglés:"
+ },
+ {
+  "id": "d942bd0a",
+  "texto": "[en]Red. Blue. Yellow. Green."
+ },
+ {
+  "id": "17b4a627",
+  "texto": "Se entrega en 5 días."
+ },
+ {
+  "id": "75d7344b",
+  "texto": "Inglés. Aprender los colores en inglés. Ya la hiciste. ¡Muy bien!"
+ },
+ {
+  "id": "28ddbe3f",
+  "texto": "Vas a necesitar: Colores."
+ },
+ {
+  "id": "2aa3a928",
+  "texto": "Inglés. Aprender los colores en inglés."
+ },
+ {
+  "id": "245e534a",
+  "texto": "Música. Cantar el Himno Nacional. Ya pasó el día de entrega."
+ },
+ {
+  "id": "cff3b629",
+  "texto": "Cantar el Himno Nacional."
+ },
+ {
+  "id": "b27c10a5",
+  "texto": "Practicá el Himno Nacional en casa."
+ },
+ {
+  "id": "84f8d33e",
+  "texto": "Música. Cantar el Himno Nacional. Ya la hiciste. ¡Muy bien!"
+ },
+ {
+  "id": "d6ce60aa",
+  "texto": "Vas a necesitar: Tu voz."
+ },
+ {
+  "id": "b5511fb7",
+  "texto": "Música. Cantar el Himno Nacional."
+ },
+ {
+  "id": "4d7f3fee",
+  "texto": "Matemáticas. Recortar un círculo y un cuadrado. Ya pasó el día de entrega."
+ },
+ {
+  "id": "17d6e08d",
+  "texto": "Recortar un círculo y un cuadrado."
+ },
+ {
+  "id": "e418f0f8",
+  "texto": "Con ayuda de un adulto, recortá un círculo y un cuadrado de papel."
+ },
+ {
+  "id": "218f4022",
+  "texto": "Matemáticas. Recortar un círculo y un cuadrado. Ya la hiciste. ¡Muy bien!"
+ },
+ {
+  "id": "729c23aa",
+  "texto": "Vas a necesitar: Tijeras, Papel de color."
+ },
+ {
+  "id": "ff6543f3",
+  "texto": "Matemáticas. Recortar un círculo y un cuadrado."
+ },
+ {
+  "id": "6c09b0a8",
+  "texto": "Español: 91. ¡Excelente!"
+ },
+ {
+  "id": "18838434",
+  "texto": "Matemáticas: 67. ¡Vamos a practicar!"
+ },
+ {
+  "id": "e33bb038",
+  "texto": "Ciencias: 89. ¡Muy bien!"
+ },
+ {
+  "id": "259f2bc4",
+  "texto": "Estudios Sociales: 74. ¡Muy bien!"
+ },
+ {
+  "id": "936bd05b",
+  "texto": "Inglés: 86. ¡Muy bien!"
+ },
+ {
+  "id": "d206d924",
+  "texto": "Educación Física: 97. ¡Excelente!"
+ },
+ {
+  "id": "2df6323f",
+  "texto": "Música: 90. ¡Excelente!"
+ },
+ {
+  "id": "febbadce",
+  "texto": "Tu promedio es 85. ¡Seguí así!"
+ },
+ {
+  "id": "fbc15bb9",
+  "texto": "Tus notas. Tu promedio es 85."
+ },
+ {
+  "id": "77575912",
+  "texto": "Niña Ana te escribió un mensaje nuevo."
+ },
+ {
+  "id": "825e2e39",
+  "texto": "Niña Ana"
+ },
+ {
+  "id": "3bc5acbf",
+  "texto": "¿Le mandamos este mensaje a Niña Ana?"
+ },
+ {
+  "id": "3c5bb536",
+  "texto": "Listo. Tu mensaje le llegó a Niña Ana."
+ },
+ {
+  "id": "4db4eb23",
+  "texto": "Mensajes con Niña Ana. Tocá el micrófono rojo para hablar."
+ },
+ {
+  "id": "59aee4af",
+  "texto": "Teacher Jorge te escribió un mensaje nuevo."
+ },
+ {
+  "id": "c3cbfde2",
+  "texto": "Teacher Jorge"
+ },
+ {
+  "id": "90395186",
+  "texto": "¿Le mandamos este mensaje a Teacher Jorge?"
+ },
+ {
+  "id": "b25ccbb7",
+  "texto": "Listo. Tu mensaje le llegó a Teacher Jorge."
+ },
+ {
+  "id": "cd40acf6",
+  "texto": "Mensajes con Teacher Jorge. Tocá el micrófono rojo para hablar."
+ },
+ {
+  "id": "794d853f",
+  "texto": "Profe Laura te escribió un mensaje nuevo."
+ },
+ {
+  "id": "9612b512",
+  "texto": "Profe Laura"
+ },
+ {
+  "id": "68cd9eae",
+  "texto": "¿Le mandamos este mensaje a Profe Laura?"
+ },
+ {
+  "id": "fbc4a99f",
+  "texto": "Listo. Tu mensaje le llegó a Profe Laura."
+ },
+ {
+  "id": "84003aa6",
+  "texto": "Mensajes con Profe Laura. Tocá el micrófono rojo para hablar."
+ },
+ {
+  "id": "879a7690",
+  "texto": "Niña Ana dice: ¡Hola! El viernes vamos al Museo de los Niños. Traé el permiso firmado."
+ },
+ {
+  "id": "057283f5",
+  "texto": "Teacher Jorge dice:"
+ },
+ {
+  "id": "46b47e99",
+  "texto": "[en]Sofía, you sang the colors song very well. Keep it up!"
+ },
+ {
+  "id": "8c364ebf",
+  "texto": "¡Bienvenida a Mi Escuela! Aquí ves todo lo de tu escuela."
+ },
+ {
+  "id": "baabafc6",
+  "texto": "Tus tareas. Tocá el cuaderno para ver tus tareas. Cuando termines una, tocá el círculo."
+ },
+ {
+  "id": "999508e8",
+  "texto": "Tus notas. Tocá la estrella para ver tus notas de cada materia."
+ },
+ {
+  "id": "2bc611c7",
+  "texto": "Hablar con tu maestra. Tocá la carta, elegí a tu maestra y hablale al micrófono rojo."
+ },
+ {
+  "id": "8fe66a94",
+  "texto": "Yo te leo todo. Si no sabés leer algo, tocá el parlante azul y yo te lo leo."
+ },
+ {
+  "id": "a287a42c",
+  "texto": "No entendí la tarea."
+ },
+ {
+  "id": "7f1cbec5",
+  "texto": "Hoy estoy enferma y no puedo ir."
+ },
+ {
+  "id": "94ef023f",
+  "texto": "Se me olvidó el cuaderno."
+ },
+ {
+  "id": "254b7fb4",
+  "texto": "¡Muchas gracias!"
+ }
+]

@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700" font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif">
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#1E5BB8"/>
+    </marker>
+    <marker id="flecha-gris" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#8A95A8"/>
+    </marker>
+    <style>
+      .pantalla{fill:#fff;stroke:#1E5BB8;stroke-width:2.5}
+      .dialogo{fill:#fff;stroke:#1E5BB8;stroke-width:2;stroke-dasharray:7 5}
+      .principal{fill:#1E5BB8}
+      .t{font-size:17px;font-weight:700;fill:#1B2433}
+      .t-blanco{font-size:17px;font-weight:700;fill:#fff}
+      .s{font-size:12.5px;fill:#56617A}
+      .s-blanco{font-size:12.5px;fill:#DCE8FA}
+      .linea{stroke:#1E5BB8;stroke-width:2.5;fill:none}
+      .volver{stroke:#8A95A8;stroke-width:2;fill:none;stroke-dasharray:5 4}
+      .etq{font-size:12px;fill:#56617A;font-style:italic}
+    </style>
+  </defs>
+
+  <rect width="1000" height="700" fill="#F4F7FC"/>
+  <text x="40" y="44" font-size="24" font-weight="800" fill="#1B2433">Mi Escuela · Esquema de navegación del estudiante</text>
+  <text x="40" y="68" font-size="14" fill="#56617A">La barra de abajo (Inicio · Tareas · Notas · Mensajes) está en todas las pantallas; en computadora es un menú lateral.</text>
+
+  <!-- Fila 1: bienvenida → inicio -->
+  <rect class="dialogo" x="40" y="100" width="200" height="74" rx="14"/>
+  <text class="t" x="140" y="132" text-anchor="middle">Bienvenida</text>
+  <text class="s" x="140" y="152" text-anchor="middle">5 pasos · solo la 1.ª vez · botón ?</text>
+
+  <rect class="principal" x="400" y="100" width="200" height="74" rx="14"/>
+  <text class="t-blanco" x="500" y="132" text-anchor="middle">Inicio</text>
+  <text class="s-blanco" x="500" y="152" text-anchor="middle">Menú principal · 3 accesos</text>
+
+  <path class="linea" d="M240 137H398" marker-end="url(#flecha)"/>
+  <text class="etq" x="319" y="128" text-anchor="middle">¡Empezar!</text>
+
+  <!-- Inicio → tres secciones -->
+  <path class="linea" d="M500 174V210H160V250" marker-end="url(#flecha)"/>
+  <path class="linea" d="M500 210V250" marker-end="url(#flecha)"/>
+  <path class="linea" d="M500 210H840V250" marker-end="url(#flecha)"/>
+
+  <!-- Fila 2: secciones -->
+  <rect class="pantalla" x="60" y="252" width="200" height="74" rx="14"/>
+  <text class="t" x="160" y="284" text-anchor="middle">Tareas</text>
+  <text class="s" x="160" y="304" text-anchor="middle">Filtros con dibujo · círculo ✓</text>
+
+  <rect class="pantalla" x="400" y="252" width="200" height="74" rx="14"/>
+  <text class="t" x="500" y="284" text-anchor="middle">Notas</text>
+  <text class="s" x="500" y="304" text-anchor="middle">Nota 0–100 · barra y ánimo</text>
+
+  <rect class="pantalla" x="740" y="252" width="200" height="74" rx="14"/>
+  <text class="t" x="840" y="284" text-anchor="middle">Mensajes</text>
+  <text class="s" x="840" y="304" text-anchor="middle">Elegir docente por su cara</text>
+
+  <!-- Fila 3: detalles -->
+  <path class="linea" d="M140 326V398" marker-end="url(#flecha)"/>
+  <text class="etq" x="132" y="366" text-anchor="end">tocar tarea</text>
+  <path class="volver" d="M200 400V328" marker-end="url(#flecha-gris)"/>
+  <text class="etq" x="208" y="366">← Volver</text>
+
+  <rect class="pantalla" x="60" y="400" width="200" height="74" rx="14"/>
+  <text class="t" x="160" y="432" text-anchor="middle">Detalle de tarea</text>
+  <text class="s" x="160" y="452" text-anchor="middle">Qué hacer · materiales</text>
+
+  <path class="linea" d="M820 326V398" marker-end="url(#flecha)"/>
+  <text class="etq" x="812" y="366" text-anchor="end">tocar cara</text>
+  <path class="volver" d="M880 400V328" marker-end="url(#flecha-gris)"/>
+  <text class="etq" x="888" y="366">← Volver</text>
+
+  <rect class="pantalla" x="740" y="400" width="200" height="74" rx="14"/>
+  <text class="t" x="840" y="432" text-anchor="middle">Conversación</text>
+  <text class="s" x="840" y="452" text-anchor="middle">Frases rápidas · micrófono</text>
+
+  <!-- Fila 4: acciones y diálogos -->
+  <path class="linea" d="M160 474V548" marker-end="url(#flecha)"/>
+  <text class="etq" x="168" y="516">¡Ya la terminé!</text>
+  <rect class="dialogo" x="60" y="550" width="200" height="74" rx="14"/>
+  <text class="t" x="160" y="582" text-anchor="middle">Aviso “¡Bien hecho!”</text>
+  <text class="s" x="160" y="602" text-anchor="middle">con botón Deshacer</text>
+
+  <path class="linea" d="M740 437H612" marker-end="url(#flecha)"/>
+  <text class="etq" x="676" y="428" text-anchor="middle">micrófono (1.ª vez)</text>
+  <rect class="dialogo" x="410" y="400" width="200" height="74" rx="14"/>
+  <text class="t" x="510" y="432" text-anchor="middle">Permiso de un adulto</text>
+  <text class="s" x="510" y="452" text-anchor="middle">luego dicta voz → texto</text>
+
+  <path class="linea" d="M840 474V548" marker-end="url(#flecha)"/>
+  <text class="etq" x="848" y="516">Enviar</text>
+  <rect class="dialogo" x="740" y="550" width="200" height="74" rx="14"/>
+  <text class="t" x="840" y="582" text-anchor="middle">¿Le mandamos…?</text>
+  <text class="s" x="840" y="602" text-anchor="middle">Sí, enviar · Cambiar</text>
+
+  <path class="linea" d="M740 587H612" marker-end="url(#flecha)"/>
+  <text class="etq" x="676" y="578" text-anchor="middle">Sí, enviar</text>
+  <rect class="pantalla" x="410" y="550" width="200" height="74" rx="14"/>
+  <text class="t" x="510" y="582" text-anchor="middle">Mensaje en el chat</text>
+  <text class="s" x="510" y="602" text-anchor="middle">✓ Enviado → ✓✓ Visto</text>
+
+  <!-- Leyenda -->
+  <g transform="translate(40 652)">
+    <rect x="0" y="0" width="34" height="22" rx="6" class="pantalla"/>
+    <text class="s" x="44" y="16">Pantalla</text>
+    <rect x="120" y="0" width="34" height="22" rx="6" class="dialogo"/>
+    <text class="s" x="164" y="16">Diálogo o aviso</text>
+    <path class="linea" d="M290 11h40" marker-end="url(#flecha)"/>
+    <text class="s" x="340" y="16">Ir a</text>
+    <path class="volver" d="M390 11h40" marker-end="url(#flecha-gris)"/>
+    <text class="s" x="440" y="16">Volver</text>
+    <text class="s" x="520" y="16">En todas: parlante 🔊 (lee en voz alta) · Voz · ? (ayuda)</text>
+  </g>
+</svg>
