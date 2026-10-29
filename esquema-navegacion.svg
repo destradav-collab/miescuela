@@ -22,6 +22,7 @@
 
   <rect width="1000" height="700" fill="#F4F7FC"/>
   <text x="40" y="44" font-size="24" font-weight="800" fill="#1B2433">Mi Escuela · Esquema de navegación del estudiante</text>
+  <text x="960" y="44" font-size="12.5" fill="#1E5BB8" text-anchor="end">destradav-collab.github.io/miescuela</text>
   <text x="40" y="68" font-size="14" fill="#56617A">La barra de abajo (Inicio · Tareas · Notas · Mensajes) está en todas las pantallas; en computadora es un menú lateral.</text>
 
   <!-- Fila 1: bienvenida → inicio -->
@@ -73,6 +74,10 @@
   <text class="t" x="840" y="432" text-anchor="middle">Conversación</text>
   <text class="s" x="840" y="452" text-anchor="middle">Frases rápidas · micrófono</text>
 
+  <!-- El círculo ✓ de la lista también marca la tarea sin abrir el detalle -->
+  <path class="linea" d="M60 300H34V587H58" marker-end="url(#flecha)"/>
+  <text class="etq" transform="translate(26 470) rotate(-90)" text-anchor="middle">círculo ✓ en la lista</text>
+
   <!-- Fila 4: acciones y diálogos -->
   <path class="linea" d="M160 474V548" marker-end="url(#flecha)"/>
   <text class="etq" x="168" y="516">¡Ya la terminé!</text>
@@ -87,7 +92,9 @@
   <text class="s" x="510" y="452" text-anchor="middle">luego dicta voz → texto</text>
 
   <path class="linea" d="M840 474V548" marker-end="url(#flecha)"/>
-  <text class="etq" x="848" y="516">Enviar</text>
+  <text class="etq" x="832" y="516" text-anchor="end">Enviar</text>
+  <path class="volver" d="M900 550V476" marker-end="url(#flecha-gris)"/>
+  <text class="etq" x="908" y="516">Cambiar</text>
   <rect class="dialogo" x="740" y="550" width="200" height="74" rx="14"/>
   <text class="t" x="840" y="582" text-anchor="middle">¿Le mandamos…?</text>
   <text class="s" x="840" y="602" text-anchor="middle">Sí, enviar · Cambiar</text>
